@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance & Corporate Utilities Suite</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">
+            <h1>🏢 Corporate & Finance Suite</h1>
+        </div>
+        <div class="header-controls">
+            <span id="role-display" style="font-size: 0.85rem; color: var(--text-muted);">Role: Employee</span>
+            <button class="theme-btn" onclick="toggleRole()">Switch Role</button>
+            <button class="theme-btn" onclick="toggleTheme()">🌓 Theme</button>
+        </div>
+    </header>
+
+    <nav class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab('expenses', event)">1. Expense Tracker</button>
+        <button class="tab-btn" onclick="switchTab('lending', event)">2. P2P Lending Simulation</button>
+        <button class="tab-btn" onclick="switchTab('invoices', event)">3. Invoice & Contract Generator</button>
+    </nav>
+
+    <main>
+        <!-- MODULE 1: EXPENSE TRACKER & WORKFLOW -->
+        <section id="tab-expenses" class="tab-content active">
+            <div class="stats-grid">
+                <div class="stat-card"><h4>Total Submitted</h4><p id="exp-total">$0.00</p></div>
+                <div class="stat-card"><h4>Approved Amount</h4><p id="exp-approved" style="color: var(--success);">$0.00</p></div>
+                <div class="stat-card"><h4>Pending Review</h4><p id="exp-pending" style="color: var(--warning);">$0.00</p></div>
+            </div>
+
+            <div class="grid-2">
+                <div class="panel" id="expense-form-panel">
+                    <h3>Submit Business Expense</h3>
+                    <form id="exp-form" style="margin-top: 16px;">
+                        <div class="form-group">
+                            <label>Expense Title</label>
+                            <input type="text" id="e-title" class="form-control" placeholder="Client Dinner & Meeting" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select id="e-category" class="form-control">
+                                <option>Travel</option>
+                                <option>Meals & Entertainment</option>
+                                <option>Office Supplies</option>
+                                <option>Software Subscriptions</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Amount ($)</label>
+                            <input type="number" id="e-amount" class="form-control" step="0.01" min="1" placeholder="150.00" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Receipt Reference</label>
+                            <input type="text" id="e-receipt" class="form-control" placeholder="REC-9942" required>
+                        </div>
+                        <button type="submit" class="btn">Submit for Approval</button>
+                    </form>
+                </div>
+
+                <div class="panel">
+                    <h3>Expense Log & Manager Workflow</h3>
+                    <div style="margin-top: 16px; overflow-x: auto;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Title / Ref</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="expense-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MODULE 2: P2P LENDING & WALLET -->
+        <section id="tab-lending" class="tab-content">
+            <div class="stats-grid">
+                <div class="stat-card"><h4>Wallet Balance</h4><p id="wallet-balance">$2,500.00</p></div>
+                <div class="stat-card"><h4>Credit Score (300-800)</h4><p id="credit-score">720</p></div>
+                <div class="stat-card"><h4>Active Loans</h4><p id="active-loans-count">0</p></div>
+            </div>
+
+            <div class="grid-2">
+                <div class="panel">
+                    <h3>Wallet & Loan Application</h3>
+                    <div style="display: flex; gap: 10px; margin-bottom: 16px;">
+                        <button class="action-btn" style="flex:1;" onclick="walletAction('deposit')">+ Deposit</button>
+                        <button class="action-btn" style="flex:1;" onclick="walletAction('withdraw')">- Withdraw</button>
+                    </div>
+                    <form id="loan-form">
+                        <div class="form-group">
+                            <label>Requested Loan Amount ($)</label>
+                            <input type="number" id="l-amount" class="form-control" min="100" placeholder="1000" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Repayment Term (Months)</label>
+                            <input type="number" id="l-term" class="form-control" min="3" max="36" value="12" required>
+                        </div>
+                        <button type="submit" class="btn">Apply for P2P Loan</button>
+                    </form>
+                </div>
+
+                <div class="panel">
+                    <h3>Active Loans & EMI Schedule</h3>
+                    <div style="margin-top: 16px; overflow-x: auto;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Loan ID</th>
+                                    <th>Principal</th>
+                                    <th>Monthly EMI</th>
+                                    <th>Progress / Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="loans-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MODULE 3: INVOICE & CONTRACT GENERATOR -->
+        <section id="tab-invoices" class="tab-content">
+            <div class="grid-2">
+                <div class="panel">
+                    <h3>Invoice & Contract Builder</h3>
+                    <form id="invoice-form" style="margin-top: 16px;">
+                        <div class="form-group">
+                            <label>Client Name</label>
+                            <input type="text" id="inv-client" class="form-control" placeholder="Acme Corporation" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Service Description</label>
+                            <input type="text" id="inv-desc" class="form-control" placeholder="Full Stack Web Architecture" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Agreed Price ($)</label>
+                            <input type="number" id="inv-rate" class="form-control" min="10" placeholder="1500" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Payment Status</label>
+                            <select id="inv-status" class="form-control">
+                                <option value="Draft">Draft</option>
+                                <option value="Sent">Sent</option>
+                                <option value="Paid">Paid</option>
+                                <option value="Overdue">Overdue</option>
+                            </select>
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <button type="submit" class="btn" style="flex:1;">Save Invoice</button>
+                            <button type="button" class="action-btn" style="flex:1;" onclick="previewContract()">Preview Contract</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="panel">
+                    <h3>Saved Client Invoices</h3>
+                    <div style="margin-top: 16px; overflow-x: auto;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Client / Desc</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="invoice-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- CONTRACT PREVIEW MODAL -->
+    <div class="modal" id="contract-modal">
+        <div class="modal-content">
+            <h3>📜 Standard Independent Contractor Agreement</h3>
+            <div id="contract-text" style="margin: 20px 0; font-size: 0.95rem; line-height: 1.6; color: var(--text-muted);"></div>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn" onclick="window.print()">Print / Export PDF</button>
+                <button class="action-btn" onclick="closeModal()">Close Preview</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
